@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import botIcon from "./assets/images/bot-icon.png";
 import soundEffect from './assets/audio/message-incoming-132126.mp3';
@@ -9,13 +9,9 @@ import Header from './components/Header/Header';
 
 function App() {
   const [prompt, setPrompt] = useState("");
-  const [reply, setReply] = useState("");
-  const [query, setQuery] = useState("")
 
   const get = (e) => {
     e.preventDefault();
-    setQuery(prompt);
-    setReply("...")
 
 
     const query = document.createElement('div');
@@ -46,8 +42,6 @@ function App() {
 
 
     axios.get(`http://localhost:4000/query/${prompt}`).then(res => {
-      setReply(res.data.text.slice(0, res.data.text.length))
-
       reply.innerHTML = res.data.text;
       reply.classList.remove('opacity-60')
       document.getElementById('audio').play()
