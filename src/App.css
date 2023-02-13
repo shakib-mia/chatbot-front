@@ -54,14 +54,38 @@
 
 input::-webkit-input-placeholder {
     /* Edge */
-    color: #ffffff9f;
+    color: #ffffffd3;
 }
 
 input:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #ffffff9f;
+    color: #ffffffd3;
 }
 
 input::placeholder {
-    color: #ffffff9f;
+    color: #ffffffd3;
+}
+
+
+/* width */
+#content::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+#content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #222 inset;
+}
+
+/* Handle */
+#content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+#content::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

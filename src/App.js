@@ -2,7 +2,9 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import botIcon from "./assets/images/bot-icon.png";
-import soundEffect from './assets/audio/message-incoming-132126.mp3'
+import soundEffect from './assets/audio/message-incoming-132126.mp3';
+import sendIcon from "./assets/images/sendIcon.png"
+import Header from './components/Header/Header';
 
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
     e.target.reset()
 
     const reply = document.createElement('div');
-    reply.classList.add('px-5', 'py-2', 'bg-dark-blue', 'w-fit', 'text-white', 'text-justify', 'rounded-[17px]', 'opacity-60');
+    reply.classList.add('px-5', 'py-2', 'bg-dark-blue', 'max-w-1/2', 'text-white', 'text-justify', 'rounded-[17px]', 'opacity-60');
     const dots = document.createElement('div');
     dots.classList.add('dots');
     for (let o = 0; o <= 2; o++) {
@@ -51,22 +53,21 @@ function App() {
       document.getElementById('audio').play()
       document.getElementById('audio').volume = 0.5
     })
+
+    const formData = new FormData();
+    formData.append('message', 'hello')
     document.getElementById("content").appendChild(replyContainer)
-    // document.getElementById('content').scrollTop("100%")
   }
 
-  useEffect(() => {
-    // document.getElementById('content').scrollTo("100%")
-  }, [reply, query])
-
-  return <div className='bg-green h-screen w-screen p-5'>
+  return <div className='bg-dark-ash h-screen w-screen p-5'>
     <audio src={soundEffect} controls id='audio' className='hidden'></audio>
-    <div className="flex flex-col w-full lg:w-1/2 bg-green drop-shadow-2xl text-white h-[95%] mx-auto relative rounded-[17px]">
-      <div className='relative h-[90%] overflow-y-auto p-4' id='content'></div>
-      <div className="flex relative w-full h-[10%] ">
-        <form className='px-5 absolute bottom-5 w-full' onSubmit={get}>
-          {/* <div className="dots"><span></span><span></span><span></span></div> */}
-          <input type="text" onChange={e => setPrompt(e.target.value)} className='w-full bg-dark-green text-white focus:outline-none p-2 rounded-[12px]' placeholder='Type Your Message Here' />
+    <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white h-[95%] mx-auto relative rounded-[17px] overflow-hidden">
+      <Header />
+      <div className='relative h-[90%] overflow-y-auto p-4 bg-violate' id='content'></div>
+      <div className="w-full shadow-md bg-dark-violate">
+        <form className='bottom-4 w-full flex gap-3 items-center' onSubmit={get}>
+          <input type="text" onChange={e => setPrompt(e.target.value)} className='w-full bg-dark-violate text-white focus:outline-none p-2 pl-5 py-5 rounded-[12px]' placeholder='Type Your Message Here' />
+          <input type="image" src={sendIcon} alt="submit" title='Or Press "Enter" to send' className='mr-5' width={30} height={30} value="Send" />
         </form>
       </div>
     </div>
