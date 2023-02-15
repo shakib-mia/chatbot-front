@@ -15,7 +15,8 @@ function App() {
 
 
     const query = document.createElement('div');
-    query.classList.add("px-5", 'py-2', 'text-right', 'bg-ash', 'w-fit', 'ml-auto', 'mt-2', 'text-justify', 'rounded-[17px]', "text-dark-ash")
+    query.classList.add("px-5", 'py-2', 'text-right', 'bg-ash', 'w-fit', 'ml-auto', 'mt-2', 'text-justify', 'rounded-[17px]', "text-dark-ash");
+    query.style.maxWidth = "50%"
     query.innerText = prompt
     document.getElementById("content").appendChild(query)
 
@@ -23,6 +24,7 @@ function App() {
 
     const reply = document.createElement('div');
     reply.classList.add('px-5', 'py-2', 'bg-dark-blue', 'max-w-1/2', 'text-white', 'text-justify', 'rounded-[17px]', 'opacity-60');
+    reply.style.maxWidth = "50%"
     const dots = document.createElement('div');
     dots.classList.add('dots');
     for (let o = 0; o <= 2; o++) {
@@ -48,8 +50,18 @@ function App() {
       document.getElementById('audio').volume = 0.5
     })
 
-    const formData = new FormData();
-    formData.append('message', 'hello')
+    // fetch("http://localhost:4000/query", {
+    //   method: "POST",
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     message: prompt
+    //   }),
+    // })
+
+    // const formData = new FormData();
+    // formData.append('message', 'hello')
     document.getElementById("content").appendChild(replyContainer)
   }
 
