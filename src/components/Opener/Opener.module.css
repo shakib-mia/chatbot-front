@@ -1,0 +1,32 @@
+#opener {
+    animation-name: opener;
+    animation-duration: 2s;
+}
+
+@keyframes opener {
+    0% {
+        opacity: 1;
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        margin: auto 0;
+    }
+
+    60% {
+        opacity: 1;
+        display: block;
+    }
+
+    99% {
+        opacity: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+        width: 0;
+        height: 0;
+    }
+}
