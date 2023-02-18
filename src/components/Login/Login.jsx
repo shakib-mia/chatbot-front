@@ -1,13 +1,17 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { url } from '../../constants';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setMethod }) => {
+    const [email, setEmail] = useState('')
+    const [pass, setPass] = useState('')
 
     const getToken = (e) => {
-        e.preventDefault()
-        localStorage.setItem('token', 'abcdef')
-        setToken(localStorage.getItem('token'))
-
-        
+        e.preventDefault();
+        axios.get(url + '/users/' + email + '/' + pass).then(res => {
+            localStorage.setItem('token', res.data[0]._id)
+            setToken(res.data[0]._id)
+        })
     }
 
     return (
@@ -18,14 +22,20 @@ const Login = ({ setToken }) => {
 
                 <form className='w-2/3 mx-auto text-white' onSubmit={getToken}>
                     <label htmlFor="email" className='ml-1 text-lg'>Email:</label>
-                    <input type="email" id='email' className='w-full p-2 focus:outline-none rounded-md text-black mb-3' placeholder='Enter Your Email Address Here' />
+                    <input type="email" id='email' className='w-full p-2 focus:outline-none rounded-md text-black mb-3' placeholder='Enter Your Email Address Here' onChange={e => setEmail(e.target.value)} />
 
                     <label htmlFor="password" className='ml-1 text-lg'>Password:</label>
-                    <input type="password" id='password' className='w-full p-2 focus:outline-none rounded-md text-black' placeholder='Enter your Password Here' />
+                    <input type="password" id='password' className='w-full p-2 focus:outline-none rounded-md text-black' placeholder='Enter your Password Here' onChange={e => setPass(e.target.value)} />
 
 
-                    <input type="submit" value="Submit" />
+                    <div className='flex justify-end'>
+                        <input type="submit" className='bg-green hover:bg-dark-green px-5 py-2 mt-3 rounded-md' value="Submit" />
+                    </div>
                 </form>
+
+                <div className='text-center'>
+                    Don't have an account? <button className='underline' onClick={() => setMethod('register')}>Register</button>
+                </div>
             </div>
         </div>
     );

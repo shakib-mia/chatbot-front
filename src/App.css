@@ -75,7 +75,7 @@ input::placeholder {
     color: #ffffffd3;
 }
 
-#email::placeholder, #password::placeholder {
+#email::placeholder, #password::placeholder, #confirmPass::placeholder {
     color: rgba(0, 0, 0, 0.205);
 }
 

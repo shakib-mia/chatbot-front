@@ -8,7 +8,7 @@ import { url } from '../../constants';
 import axios from 'axios';
 
 
-function Main() {
+const Main = ({ setToken }) => {
   const [prompt, setPrompt] = useState("");
   const [data, setData] = useState([]);
   const [reload, setReload] = useState(false)
@@ -37,7 +37,7 @@ function Main() {
     if (prompt) {
       axios.post(url + '/query', {
         message: prompt,
-        // token: localStorage.getItem('token')
+        token: localStorage.getItem('token')
       })
         .then(res => {
           if (res) {
@@ -59,7 +59,15 @@ function Main() {
     setPrompt('')
   }
 
+  const signOut = () => {
+    setToken('');
+    localStorage.removeItem('token');
+  }
+
   return <div className='bg-dark-ash h-screen w-screen md:p-5'>
+    <div className='fixed top-2 right-2'>
+      <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
+    </div>
     <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white h-[95%] mx-auto relative rounded-[17px] overflow-hidden">
       <Header />
       <div className='relative h-[90%] overflow-y-auto p-2 lg:p-4 bg-violate' id='content'>
