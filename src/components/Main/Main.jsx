@@ -5,6 +5,7 @@ import Message from './../Message/Message';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { url } from '../../constants';
+import axios from 'axios';
 
 
 function Main() {
@@ -13,11 +14,14 @@ function Main() {
   const [reload, setReload] = useState(false)
 
   useEffect(() => {
-    fetch(`${url}/messages`)
+    fetch(`${url}/messages`, {
+      method: 'GET',
+      headers: {
+        authorization: localStorage.getItem('token')
+      }
+    })
       .then(res => res.json())
-      .then(data => {
-        setData(data)
-      })
+      .then((data) => setData(data))
   }, [data]);
 
   const content = document.getElementById('content')
@@ -29,22 +33,28 @@ function Main() {
   const get = (e) => {
     e.preventDefault();
     setReload(!reload)
-    toast.success("Your Query is Taken. Please wait for response", {
-      position: 'bottom-center'
-    })
 
-
-    fetch(`${url}/query/${prompt}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-            setReload(!reload)
-          setTimeout(() => {
-            document.getElementById('content').scrollTo(0, document.getElementById('content').scrollHeight)
-          }, 1000)
-        }
+    if (prompt) {
+      axios.post(url + '/query', {
+        message: prompt,
+        // token: localStorage.getItem('token')
       })
-      .catch(err => console.error(err));
+        .then(res => {
+          if (res) {
+            setReload(!reload)
+            toast.success("Your Query is Taken. Please wait for response", {
+              position: 'bottom-center'
+            })
+            setTimeout(() => {
+              document.getElementById('content').scrollTo(0, document.getElementById('content').scrollHeight)
+            }, 1000)
+          }
+        })
+    } else {
+      toast.warn("field is empty", {
+        position: 'bottom-center'
+      })
+    }
 
     setPrompt('')
   }
