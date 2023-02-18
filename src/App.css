@@ -75,6 +75,10 @@ input::placeholder {
     color: #ffffffd3;
 }
 
+#email::placeholder, #password::placeholder {
+    color: rgba(0, 0, 0, 0.205);
+}
+
 
 /* width */
 #content::-webkit-scrollbar {
