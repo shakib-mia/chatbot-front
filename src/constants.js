@@ -1,5 +1,5 @@
-// export const url = 'https://chabot-app-server.vercel.app';
-export const url = 'http://localhost:5000';
+export const url = 'https://chabot-app-server.vercel.app';
+// export const url = 'http://localhost:5000';
 
 export const getData = (setData, collection, body) => {
     fetch(`${url}/${collection}`, {
