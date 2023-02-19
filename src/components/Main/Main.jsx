@@ -20,7 +20,7 @@ const Main = ({ setToken }) => {
 
   useEffect(() => {
     axios.get(url + '/users/' + localStorage.getItem('token'))
-    .then(res => setUser(res.data[0].email))
+      .then(res => setUser(res.data[0].email))
   }, []);
 
   // useEffect(() => {
@@ -46,7 +46,9 @@ const Main = ({ setToken }) => {
   const get = (e) => {
     e.preventDefault();
     setReload(!reload)
-
+    toast.success("Your Query is Taken. Please wait for response", {
+      position: 'bottom-center'
+    })
     if (prompt) {
       axios.post(url + '/query', {
         message: prompt,
@@ -55,9 +57,7 @@ const Main = ({ setToken }) => {
         .then(res => {
           if (res) {
             setReload(!reload)
-            toast.success("Your Query is Taken. Please wait for response", {
-              position: 'bottom-center'
-            })
+
             setTimeout(() => {
               document.getElementById('content').scrollTo(0, document.getElementById('content').scrollHeight)
             }, 1000)
@@ -80,10 +80,10 @@ const Main = ({ setToken }) => {
   // console.log(data);
 
   return <div className='bg-dark-ash h-screen w-screen md:p-5'>
-    <div className='fixed top-2 right-2'>
+    <div className='fixed top-2.5 right-2.5 z-50'>
       <span className='text-white capitalize'>{user.split('@')[0]}</span> <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
     </div>
-    <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white h-[95%] mx-auto relative rounded-[17px] overflow-hidden">
+    <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white mx-auto relative md:rounded-[17px] overflow-hidden h-full">
       <Header />
       <div className='relative h-[90%] overflow-y-auto p-2 lg:p-4 bg-violate' id='content'>
         {data.map(item => <Message item={item} key={item._id} />)}

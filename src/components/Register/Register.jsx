@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { url } from '../../constants';
+import { emailValidate, url } from '../../constants';
 
 const Register = ({ setMethod, setToken }) => {
     const [email, setEmail] = useState('');
@@ -19,33 +19,35 @@ const Register = ({ setMethod, setToken }) => {
         // })
         // console.log(email, pass);
 
-        if (pass === confirmPass) {
-            axios.post(url + '/users', {
-                email,
-                pass
-            }).then(res => {
-                if (res.data.insertedId) {
-                    setDisabled(false)
-                    localStorage.setItem('token', res.data.insertedId);
-                    setToken(true)
-                }
+        if (emailValidate.test(email) && pass.length >= 5) {
+            if (pass === confirmPass) {
+                axios.post(url + '/users', {
+                    email,
+                    pass
+                }).then(res => {
+                    if (res.data.insertedId) {
+                        setDisabled(false)
+                        localStorage.setItem('token', res.data.insertedId);
+                        setToken(true)
+                    }
 
-                if (res.data.statusCode === 409) {
-                    setDisabled(false);
-                    toast.warn("User Already Exists", {
-                        position: "bottom-center"
-                    })
-                }
-            }).catch(err => console.error(err))
+                    if (res.data.statusCode === 409) {
+                        setDisabled(false);
+                        toast.warn("User Already Exists", {
+                            position: "bottom-center"
+                        })
+                    }
+                }).catch(err => console.error(err))
+            }
         }
     }
     return (
-        <div className='bg-dark-ash h-screen w-screen md:p-5'>
+        <div className='bg-dark-ash h-screen w-screen p-3 md:p-5 pt-5'>
             <div className='w-11/12 md:w-1/3 mx-auto bg-blue text-white p-3 md:p-5'>
                 <h1 className='text-center text-2xl font-medium'>Register</h1>
-                <hr className='text-secondary-ash w-1/2 mx-auto my-2' />
+                <hr className='text-secondary-ash w-11/12 lg:w-1/2 mx-auto my-2' />
 
-                <form className='w-2/3 mx-auto text-white' onSubmit={getToken}>
+                <form className='lg:w-2/3 mx-auto text-white' onSubmit={getToken}>
                     <label htmlFor="email" className='ml-1 text-lg'>Email:</label>
                     <input type="email" id='email' className='w-full p-2 focus:outline-none rounded-md text-black mb-3' placeholder='Enter Your Email Address Here' onChange={e => setEmail(e.target.value)} />
 
@@ -60,7 +62,7 @@ const Register = ({ setMethod, setToken }) => {
                     </div>
                 </form>
 
-                <div className='text-center'>
+                <div className='text-center mt-5'>
                     Already have an account? <button className='underline' onClick={() => setMethod('login')}>Login</button>
                 </div>
             </div>

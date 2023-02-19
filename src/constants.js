@@ -12,3 +12,5 @@ export const getData = (setData, collection, body) => {
         .then(res => res.json())
         .then((data) => setData(data))
 }
+
+export const emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
