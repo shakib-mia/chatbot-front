@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { url } from '../../constants';
 
 const Login = ({ setToken, setMethod }) => {
@@ -9,8 +10,18 @@ const Login = ({ setToken, setMethod }) => {
     const getToken = (e) => {
         e.preventDefault();
         axios.get(url + '/users/' + email + '/' + pass).then(res => {
-            localStorage.setItem('token', res.data[0]._id)
-            setToken(res.data[0]._id)
+            // console.log(!!res.data.length);
+            if (!!res.data.length) {
+                localStorage.setItem('token', res.data[0]._id)
+                setToken(res.data[0]._id)
+            } else {
+                toast.warn('User not found', {
+                    position: 'bottom-center'
+                })
+
+                console.log('object');
+            }
+
         })
     }
 

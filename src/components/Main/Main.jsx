@@ -3,7 +3,7 @@ import sendIcon from "./../../assets/images/sendIcon.png"
 import Header from './../Header/Header';
 import Message from './../Message/Message';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { getData, url } from '../../constants';
 import axios from 'axios';
 
@@ -95,8 +95,6 @@ const Main = ({ setToken }) => {
         </form>
       </div>
     </div>
-
-    <ToastContainer />
   </div>;
 }
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { url } from '../../constants';
 
 const Register = ({ setMethod, setToken }) => {
@@ -30,7 +31,10 @@ const Register = ({ setMethod, setToken }) => {
                 }
 
                 if (res.data.statusCode === 409) {
-                    setDisabled(false)
+                    setDisabled(false);
+                    toast.warn("User Already Exists", {
+                        position: "bottom-center"
+                    })
                 }
             }).catch(err => console.error(err))
         }
