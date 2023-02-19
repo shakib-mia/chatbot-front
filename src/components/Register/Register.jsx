@@ -1,12 +1,17 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { url } from '../../constants';
 
-const Register = ({ setMethod }) => {
-    const [email, setEmail] = useState('')
-    const [pass, setPass] = useState('')
-    const [confirmPass, setConfirmPass] = useState('')
+const Register = ({ setMethod, setToken }) => {
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+    const [disabled, setDisabled] = useState(false)
+
 
     const getToken = (e) => {
         e.preventDefault();
+        setDisabled(true)
         // axios.get(url + '/users/' + email + '/' + pass).then(res => {
         //     localStorage.setItem('token', res.data[0]._id)
         //     setToken(res.data[0]._id)
@@ -14,7 +19,20 @@ const Register = ({ setMethod }) => {
         // console.log(email, pass);
 
         if (pass === confirmPass) {
-            console.log(email, pass);
+            axios.post(url + '/users', {
+                email,
+                pass
+            }).then(res => {
+                if (res.data.insertedId) {
+                    setDisabled(false)
+                    localStorage.setItem('token', res.data.insertedId);
+                    setToken(true)
+                }
+
+                if (res.data.statusCode === 409) {
+                    setDisabled(false)
+                }
+            }).catch(err => console.error(err))
         }
     }
     return (
@@ -34,7 +52,7 @@ const Register = ({ setMethod }) => {
                     <input type="password" id='confirmPass' className='w-full p-2 focus:outline-none rounded-md text-black' placeholder='Retype your Password Here' onChange={e => setConfirmPass(e.target.value)} />
 
                     <div className='flex justify-end'>
-                        <input type="submit" className='bg-green hover:bg-dark-green px-5 py-2 mt-3 rounded-md cursor-pointer' value="Submit" />
+                        <input type="submit" disabled={disabled} className={`${disabled ? "bg-dark-green" : "bg-green"} hover:bg-dark-green px-5 py-2 mt-3 rounded-md cursor-pointer`} value="Submit" />
                     </div>
                 </form>
 

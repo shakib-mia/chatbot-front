@@ -7,7 +7,7 @@ const Auth = ({ setToken }) => {
     return (
         <>
             {method === 'login' &&  <Login setToken={setToken} setMethod={setMethod} />}
-            {method === 'register' && <Register setMethod={setMethod} />}
+            {method === 'register' && <Register setToken={setToken} setMethod={setMethod} />}
         </>
     );
 };

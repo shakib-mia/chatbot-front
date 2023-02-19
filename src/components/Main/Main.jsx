@@ -4,25 +4,38 @@ import Header from './../Header/Header';
 import Message from './../Message/Message';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
-import { url } from '../../constants';
+import { getData, url } from '../../constants';
 import axios from 'axios';
 
 
 const Main = ({ setToken }) => {
   const [prompt, setPrompt] = useState("");
   const [data, setData] = useState([]);
-  const [reload, setReload] = useState(false)
+  const [reload, setReload] = useState(false);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
-    fetch(`${url}/messages`, {
-      method: 'GET',
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    })
-      .then(res => res.json())
-      .then((data) => setData(data))
+    getData(setData, 'messages')
   }, [data]);
+
+  useEffect(() => {
+    axios.get(url + '/users/' + localStorage.getItem('token'))
+    .then(res => setUser(res.data[0].email))
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(users);
+  // }, [users])
+  // const getData = () => {
+  //   fetch(`${url}/messages`, {
+  //     method: 'GET',
+  //     headers: {
+  //       authorization: localStorage.getItem('token')
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then((data) => setData(data))
+  // }
 
   const content = document.getElementById('content')
 
@@ -64,9 +77,11 @@ const Main = ({ setToken }) => {
     localStorage.removeItem('token');
   }
 
+  // console.log(data);
+
   return <div className='bg-dark-ash h-screen w-screen md:p-5'>
     <div className='fixed top-2 right-2'>
-      <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
+      <span className='text-white capitalize'>{user.split('@')[0]}</span> <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
     </div>
     <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white h-[95%] mx-auto relative rounded-[17px] overflow-hidden">
       <Header />
