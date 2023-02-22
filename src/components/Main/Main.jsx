@@ -40,7 +40,7 @@ const Main = ({ setToken }) => {
   const content = document.getElementById('content')
 
   useEffect(() => {
-    setTimeout(content?.scrollTo(0, content.scrollHeight), 100)
+    setTimeout(content?.scrollTo(0, content.scrollHeight), 50)
   }, [content])
 
   const get = (e) => {
@@ -77,11 +77,9 @@ const Main = ({ setToken }) => {
     localStorage.removeItem('token');
   }
 
-  // console.log(data);
-
   return <div className='bg-dark-ash h-screen w-screen md:p-5'>
     <div className='fixed top-2.5 right-2.5 z-50'>
-      <span className='text-white capitalize'>{user.split('@')[0]}</span> <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
+      <span className='text-white capitalize'>{user ? user.split('@')[0] : "Loading..."}</span> <button className='bg-red text-white hover:bg-dark-red px-4 py-2 rounded-md' style={{ transition: 'all 0.1s' }} onClick={signOut}>Sign Out</button>
     </div>
     <div className="flex flex-col w-full lg:w-1/2 drop-shadow-2xl text-white mx-auto relative md:rounded-[17px] overflow-hidden h-full">
       <Header />
