@@ -1,55 +1,75 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { url } from '../../constants';
+import React from "react";
+import auth from "../../firebase.init";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const Login = ({ setToken, setMethod }) => {
-    const [email, setEmail] = useState('')
-    const [pass, setPass] = useState('')
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const getToken = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(e.target.email.value, e.target.password.value);
+  };
 
-    const getToken = (e) => {
-        e.preventDefault();
-        axios.get(url + '/users/' + email + '/' + pass).then(res => {
-            // console.log(!!res.data.length);
-            if (!!res.data.length) {
-                localStorage.setItem('token', res.data[0]._id)
-                setToken(res.data[0]._id)
-            } else {
-                toast.warn('User not found', {
-                    position: 'bottom-center'
-                })
+  if (loading) {
+    console.log(loading);
+  }
+  if (error) {
+    console.log(error);
+  }
 
-                console.log('object');
-            }
+  if (user) {
+    localStorage.setItem("token", user.user.accessToken);
+    window.location.reload();
+  }
 
-        })
-    }
+  return (
+    <div className="bg-dark-ash h-screen w-screen md:p-5 pt-5">
+      <div className="w-11/12 md:w-1/2 mx-auto bg-blue text-white p-3 md:p-5">
+        <h1 className="text-center text-2xl font-medium">Login</h1>
+        <hr className="text-secondary-ash w-1/2 mx-auto my-2" />
 
-    return (
-        <div className='bg-dark-ash h-screen w-screen md:p-5 pt-5'>
-            <div className='w-11/12 md:w-1/3 mx-auto bg-blue text-white p-3 md:p-5'>
-                <h1 className='text-center text-2xl font-medium'>Login</h1>
-                <hr className='text-secondary-ash w-1/2 mx-auto my-2' />
+        <form className="md:w-2/3 mx-auto text-white" onSubmit={getToken}>
+          <label htmlFor="email" className="ml-1 text-lg">
+            Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="w-full p-2 focus:outline-none rounded-md text-black mb-3"
+            placeholder="Enter Your Email Address Here"
+          />
 
-                <form className='md:w-2/3 mx-auto text-white' onSubmit={getToken}>
-                    <label htmlFor="email" className='ml-1 text-lg'>Email:</label>
-                    <input type="email" id='email' className='w-full p-2 focus:outline-none rounded-md text-black mb-3' placeholder='Enter Your Email Address Here' onChange={e => setEmail(e.target.value)} />
+          <label htmlFor="password" className="ml-1 text-lg">
+            Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="w-full p-2 focus:outline-none rounded-md text-black"
+            placeholder="Enter your Password Here"
+          />
 
-                    <label htmlFor="password" className='ml-1 text-lg'>Password:</label>
-                    <input type="password" id='password' className='w-full p-2 focus:outline-none rounded-md text-black' placeholder='Enter your Password Here' onChange={e => setPass(e.target.value)} />
+          <div className="flex justify-end">
+            <input
+              type="submit"
+              disabled={loading}
+              className="bg-green hover:bg-dark-green px-5 py-2 mt-3 rounded-md"
+              value={loading ? "loading..." : "Submit"}
+            />
+          </div>
+        </form>
 
-
-                    <div className='flex justify-end'>
-                        <input type="submit" className='bg-green hover:bg-dark-green px-5 py-2 mt-3 rounded-md' value="Submit" />
-                    </div>
-                </form>
-
-                <div className='text-center mt-5'>
-                    Don't have an account? <button className='underline' onClick={() => setMethod('register')}>Register</button>
-                </div>
-            </div>
+        <div className="text-center mt-5">
+          Don't have an account?{" "}
+          <button className="underline" onClick={() => setMethod("register")}>
+            Register
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Login;
